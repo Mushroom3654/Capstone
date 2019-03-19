@@ -1,18 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
-     <%@page import="java.sql.*" %>
+<%@page import="java.sql.*" %>
+<%@page import="gagosang.DBConnect.*" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>Insert title here</title>
+<title>MemberDB</title>
 </head>
 <body>
 <% 
-	//DB위치로 가서 아이디, 비번 설정
-	String DB_URL = "jdbc:oracle:thin:@127.0.0.1:1521:XE";
-	String DB_USER = "hr";
-	String DB_PASSWORD = "hr";
 	
 	Connection conn = null;
 	Statement stmt = null;
@@ -28,33 +25,29 @@
 	String phone = request.getParameter("phone");
 	
 	
-	String query = " INSERT INTO MEMBERS(SEQ_MEMBERS, ID, PASSWORD, NAME, EMAIL, PHONE)"
-			+ " VALUES(SEQ_MEMBERS.NEXTVAL, " + "'" + id + "', " + "'" + password + "', " + "'" + name + "', " + "'" + sex + "', "
-	+  "'" + mail + "', " + "'" + phone + "'" + ")";
+	String query = " INSERT INTO USER_INFO(SEQ, ID, PASSWORD, NAME, MAIL, MAIL2, PHONE)"
+			+ " VALUES(SEQ, " + "'" + id + "', " + "'" + password + "', " + "'" + name + "', " + "'" + sex + "', "
+	+  "'" + mail + "', " + "'" + mail2 + "', '" + phone + "'" + ")";
 	
  
-	try{ //try catch 문은 try에서 오류가 나면 catch문에 대응책을 실행
-		//드라이버를 로딩한다
-		Class.forName("oracle.jdbc.driver.OracleDriver");
+	try{
+		Class.forName("com.mysql.jdbc.Driver");
 	} catch (ClassNotFoundException e ){
 		e.printStackTrace();
 	}
 	
 	try{
-		//데이터베이스의 연결을 설정
-		conn = DriverManager.getConnection(DB_URL,DB_USER, DB_PASSWORD);
-		//Statement를 가져온다. SQL query문을 실행하기 위해
+		conn = DBConnection.getDBConn();
 		stmt = conn.createStatement();
-		//SQL문 실행
 		rs=stmt.executeQuery(query);
 	%>
+	
 	<br>
 	<br>
 	<b><font size="6" color="gray">가입된 회원 정보</font></b>
 	<br>
 	<br>
  
-	
 	<form accept-charset="EUC-KR" name="member_info" method="get">
 		<table>
 			<tr>
@@ -90,11 +83,8 @@
 			 e.printStackTrace();
 		} finally{
 		    try{
-				//ResultSet 닫는다
 				rs.close();
-				//Statement close
 				stmt.close();
-				//Connection close
 				conn.close();
 			} catch (SQLException e){}
 		}

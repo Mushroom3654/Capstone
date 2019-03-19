@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<meta http-equiv="Content-type" content="text/html; charset=euc-kr">
 	<title>Insert title here</title>
 </head>
 <body>
